@@ -1,14 +1,15 @@
 # frozen_string_literal: true
 
-class Pet::CreateService
+class Pet::UpdateService
   attr_reader :pet, :params
 
-  def initialize(params:)
+  def initialize(pet:, params:)
+    @pet = pet
     @params = params
   end
 
   def call
-    @pet = Pet.new(@params)
+    @pet.update!(params)
     @pet.save!
   rescue StandardError => e
     raise(e)

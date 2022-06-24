@@ -17,6 +17,13 @@ module Actions
         end
 
         def update
+          pet_form = Pet::UpdateForm.new(pet_params)
+
+          if pet_form.valid? && pet_form.call(@pet)
+            render json: { message: 'sucess!' }, status: :no_content
+          else
+            render json: { errors: pet_form.errors.full_messages }, status: :unprocessable_entity
+          end
         end
 
         private
