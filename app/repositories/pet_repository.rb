@@ -8,6 +8,10 @@ class PetRepository
       Pet.where.not(url: nil).order(id: :desc).limit(itens(attrs[0]))
     end
 
+    def adopted(*attrs)
+      Pet.where.not(owner: nil).where(adopted: true).limit(itens(attrs[0]))
+    end
+
     private
 
     def itens(params)
