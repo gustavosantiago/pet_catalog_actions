@@ -4,7 +4,7 @@ module Actions
   module Api
     module V1
       class PetsController < Actions::Api::V1::ApplicationController
-        before_action :set_pet, only: %i(update)
+        before_action :set_pet, only: %i(update destroy)
 
         def create
           pet_form = Pet::CreateForm.new(pet_params)
@@ -23,6 +23,16 @@ module Actions
             render json: { message: 'sucess!' }, status: :no_content
           else
             render json: { errors: pet_form.errors.full_messages }, status: :unprocessable_entity
+          end
+        end
+
+        def destroy
+          delete_service = Pet::DeleteService.new(pet: @pet)
+
+          if delete_service.call
+            render json: { message: 'sucess!' }, status: :no_content
+          else
+            render json: { error: pet_form.errors.full_messages }, status: :unprocessable_entity
           end
         end
 

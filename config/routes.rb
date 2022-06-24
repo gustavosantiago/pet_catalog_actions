@@ -1,7 +1,7 @@
 Actions::Engine.routes.draw do
   namespace :api do
     namespace :v1 do
-      resources :pets, only: %i(create update)
+      resources :pets, except: %i(index show)
     end
   end
 end
