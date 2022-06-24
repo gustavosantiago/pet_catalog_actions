@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 
-class Pets::BaseForm < ApplicationForm
+class Pet::BaseForm < ApplicationForm
   include ShallowAttributes
-  extend Enumerize
 
   attr_accessor :pet
 
@@ -14,16 +13,11 @@ class Pets::BaseForm < ApplicationForm
   validates :name, :breed, :description, :url, presence: true
   validates :breed, length: { maximum: 25 }
   validates :description, length: { maximum: 250 }
-
-  def new_record?
-    return true if pet.nil?
-
-    pet.new_record?
-  end
+  validates_format_of :url, with: /((?=[a-z0-9-]{1,63}\.)[a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]{2,63}/
 
   private
 
-  def base_attributes
+  def base_params
     {
       name: name,
       breed: breed,

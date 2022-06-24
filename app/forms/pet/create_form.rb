@@ -1,17 +1,14 @@
 class Pet::CreateForm < Pet::BaseForm
-  def create(pet:)
-    @pet = pet
+  attr_reader :pet
 
+  def call
     return false if invalid?
 
-    rescuing_errors { create_pet }
-  end
+    rescuing_errors do
+      create_service = Pet::CreateService.new(params: base_params)
+      create_service.call
 
-  private
-
-  def create_responsible_profile
-    transaction do
-      @pet = Pet::CreateService(params: base_params)
+      self.pet = create_service.pet
     end
   end
 end

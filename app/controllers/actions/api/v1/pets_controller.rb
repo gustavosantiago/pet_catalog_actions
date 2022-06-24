@@ -1,13 +1,36 @@
-class Discovery::Api::V1::PetsController < Discovery::Api::V1::ApplicationController
-  def create
-    @pet = Pet::CreateForm.call(pet_params)
+# frozen_string_literal: true
 
-    render json: PetSerializer.new(@pets).serializable_hash.to_json, status: :ok
-  end
+module Actions
+  module Api
+    module V1
+      class PetsController < Actions::Api::V1::ApplicationController
+        before_action :set_pet, only: %i(update)
 
-  private
+        def create
+          pet_form = Pet::CreateForm.new(pet_params)
 
-  def pet_params
-    params.permit(:name, :breed, :description, :url)
+          if pet_form.valid? && pet_form.call
+            render json: PetSerializer.new(pet_form.pet).serializable_hash.to_json, status: :created
+          else
+            render json: { errors: pet_form.errors.full_messages }, status: :unprocessable_entity
+          end
+        end
+
+        def update
+        end
+
+        private
+
+        def pet_params
+          params.require(:pet).permit(:name, :breed, :description, :url)
+        end
+
+        def set_pet
+          @pet = PetRepository.find_by(id: params[:id])
+
+          render_not_found if @pet.nil?
+        end
+      end
+    end
   end
 end

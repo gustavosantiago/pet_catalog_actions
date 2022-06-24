@@ -1,0 +1,15 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    pg (1.4.1)
+    shallow_attributes (0.9.5)
+
+PLATFORMS
+  x86_64-linux
+
+DEPENDENCIES
+  pg (~> 1.1)
+  shallow_attributes
+
+BUNDLED WITH
+   2.3.7
