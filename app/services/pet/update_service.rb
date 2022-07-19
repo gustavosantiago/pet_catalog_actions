@@ -10,7 +10,6 @@ class Pet::UpdateService
 
   def call
     @pet.update!(params)
-    @pet.save!
   rescue StandardError => e
     raise(e)
   end

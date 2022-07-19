@@ -40,7 +40,7 @@ module Actions
           adopted_service = Pet::AdoptedService.new(pet: @pet)
 
           if adopted_service.call
-            render json: PetSerializer.new(@pet, params: { adopted_params: true }).serializable_hash.to_json, status: :ok
+            render json: PetSerializer.new(@pet).serializable_hash.to_json, status: :ok
           else
             render json: { errors: @pet.errors.full_messages }, status: :unprocessable_entity
           end

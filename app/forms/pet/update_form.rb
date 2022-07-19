@@ -4,7 +4,6 @@ class Pet::UpdateForm < Pet::BaseForm
   def call(pet)
     return false unless valid?(:update)
 
-    binding.pry
     rescuing_errors do
       update_service = Pet::UpdateService.new(pet: pet, params: update_params)
       update_service.call
@@ -14,6 +13,6 @@ class Pet::UpdateForm < Pet::BaseForm
   private
 
   def update_params
-    base_params.compact!
+    base_params.compact
   end
 end
